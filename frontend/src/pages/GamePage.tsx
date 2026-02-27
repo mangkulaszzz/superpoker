@@ -2,6 +2,7 @@ import "./GamePage.css"
 import MetaPhase from "../components/meta/MetaPhase";
 import PokerTable from "../components/table/PokerTable";
 import { useGame } from "../hooks/useGame";
+import { type GameSpeed } from "../types/game";
 
 export default function GamePage() {
 
@@ -31,6 +32,7 @@ export default function GamePage() {
                 <button
                     onClick={game.handleInitialize}
                     hidden={!game.isMetaPhase}
+                    disabled={game.isMetaAnimating}
                 >
                     Initialize
                 </button>
@@ -38,6 +40,7 @@ export default function GamePage() {
                 <button 
                     onClick={game.handlePlay}
                     hidden={game.isMetaPhase}
+                    disabled={game.isRoundOngoing}
                 >
                     Play Round
                 </button>
@@ -49,6 +52,32 @@ export default function GamePage() {
                     Reset Game
                 </button>
             </div>
+
+            {!game.isMetaPhase && game.isGamePhase && (
+                <div className="game-speed">
+                    <label>
+                        <input
+                            type="radio"
+                            value="normal"
+                            checked={game.gameSpeed === "normal"}
+                            onChange={(e) =>
+                                game.setGameSpeed(e.target.value as GameSpeed)}
+                        />
+                        Normal
+                    </label>
+
+                    <label>
+                        <input
+                            type="radio"
+                            value="fast"
+                            checked={game.gameSpeed === "fast"}
+                            onChange={(e) =>
+                                game.setGameSpeed(e.target.value as GameSpeed)}
+                        />
+                        Fast
+                    </label>
+                </div>
+            )}
 
             {!game.isGamePhase && (
                 <MetaPhase

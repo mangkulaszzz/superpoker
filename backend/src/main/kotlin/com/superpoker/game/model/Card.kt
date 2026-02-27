@@ -8,6 +8,7 @@ enum class Suit {
 }
 
 enum class Rank(val value: Int) {
+    ACE(1),
     TWO(2),
     THREE(3),
     FOUR(4),
@@ -20,7 +21,6 @@ enum class Rank(val value: Int) {
     JACK(11),
     QUEEN(12),
     KING(13),
-    ACE(14)
 }
 
 data class Card(

@@ -30,16 +30,8 @@ class GameManager {
         val targetCard = deck.draw()
 
         val initialBet = betCard[0].rank.value
-        var multiplier = multiplierCard[0].rank.value
-        var targetScore = targetCard[0].rank.value
-
-        if (multiplier == Rank.ACE.value) {
-            multiplier = 1
-        }
-
-        if (targetScore == Rank.ACE.value) {
-            targetScore = 1
-        }
+        val multiplier = multiplierCard[0].rank.value
+        val targetScore = targetCard[0].rank.value
 
         gameState = GameState(
             players = players,

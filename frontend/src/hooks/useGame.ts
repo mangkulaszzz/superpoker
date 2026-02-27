@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { CardDto, RoundResultDto } from "../types/game"
+import { type GameSpeed, type CardDto, type RoundResultDto } from "../types/game"
 import { initializeGame, playRound, reset } from "../api/gameApi"
 
 export function useGame() {
@@ -18,6 +18,7 @@ export function useGame() {
     const [isMetaPhase, setIsMetaPhase] = useState(true)
     const [isMetaAnimating, setIsMetaAnimating] = useState(false)
     const [isGamePhase, setIsGamePhase] = useState(false)
+    const [isRoundOngoing, setIsRoundOngoing] = useState(false)
 
     const [currentScore, setCurrentScore] = useState<number[]>([])
     const [animateScore, setAnimateScore] = useState(false)
@@ -26,6 +27,17 @@ export function useGame() {
     const [displayFlop, setDisplayFlop] = useState(false)
     const [displayTurn, setDisplayTurn] = useState(false)
     const [displayRiver, setDisplayRiver] = useState(false)
+
+    const [gameSpeed, setGameSpeed] = useState<GameSpeed>("normal")
+
+    const SPEED_CONFIG: Record<GameSpeed, { speed: number }> = {
+        normal: {
+            speed: 1000, // 1 second
+        },
+        fast: {
+            speed: 500, // 0.5 seconds
+        },
+    }
 
     const handleInitialize = async () => {
         try {
@@ -76,8 +88,9 @@ export function useGame() {
             setShowWinner(false)
 
             setIsGamePhase(true)
+            setIsRoundOngoing(true)
 
-            const dealSpeed = 500
+            const dealSpeed = SPEED_CONFIG[gameSpeed].speed
             let delay = dealSpeed
 
             // deal player cards first
@@ -146,7 +159,10 @@ export function useGame() {
                 if (result.isGameOver) {
                     setGameOver(true)
                 }
+                
+                setIsRoundOngoing(false)
             }, delay)
+
         } catch (err: any) {
             setError(err.message)
         }
@@ -192,15 +208,19 @@ export function useGame() {
         multiplier,
         targetScore,
         isMetaPhase,
+        isMetaAnimating,
         isGamePhase,
+        isRoundOngoing,
         currentScore,
         animateScore,
         gameOver,
         displayFlop,
         displayTurn,
         displayRiver,
+        gameSpeed,
         handleInitialize,
         handlePlay,
-        resetGame
+        resetGame,
+        setGameSpeed
     }
 }

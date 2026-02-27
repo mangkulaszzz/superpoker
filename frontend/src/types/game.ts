@@ -27,3 +27,5 @@ export type GameStartDto = {
     targetCard: CardDto
     players: PlayerDto[]
 }
+
+export type GameSpeed = "normal" | "fast"

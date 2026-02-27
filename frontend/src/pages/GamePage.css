@@ -45,6 +45,13 @@
   cursor: pointer;
 }
 
+.game-speed {
+  display: flex;
+  gap: 1rem;
+  margin-left: 900px;
+  color: white
+}
+
 .bet-display {
   color: white;
   font-size: 30px; 
