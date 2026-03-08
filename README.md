@@ -6,3 +6,10 @@ Super Poker App – Full Stack (React + Spring Boot Kotlin)
 A full-stack custom poker game application built with a modern React (TypeScript) frontend and a Spring Boot (Kotlin) REST API backend.
 
 Will be supported in the future on mobile devices (Android and iOS).
+
+## Run with Docker
+
+docker compose up --build
+
+then open:
+http://localhost:5173

@@ -6,7 +6,9 @@ export async function initializeGame(players: string[]): Promise<GameStartDto> {
     const response = await fetch(`${BASE_URL}/initialize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(players)
+        body: JSON.stringify({
+            playerNames: players
+        })
     })
 
     if (!response.ok) {

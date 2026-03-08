@@ -118,7 +118,7 @@ export function useGame() {
             })
 
             // then deal community cards
-            result.communityCards.forEach((card, index) => {
+            result.communityCards.forEach((_, index) => {
                 setTimeout(() => {
                     setDealtCommunity(prev => prev + 1)
                     
@@ -170,7 +170,7 @@ export function useGame() {
 
     const resetGame = async () => {
         try {
-            const result = await reset()
+            await reset()
             
             setGameOver(false)
 

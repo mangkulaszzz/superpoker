@@ -1,6 +1,7 @@
 package com.superpoker.controller
 
 import com.superpoker.dto.GameStartDto
+import com.superpoker.dto.InitializeRequestDto
 import com.superpoker.dto.PlayerDto
 import com.superpoker.dto.RoundResultDto
 import com.superpoker.game.engine.RoundResult
@@ -22,8 +23,8 @@ class GameController(
 ) {
 
     @PostMapping("/initialize")
-    fun initialize(@RequestBody playerNames: List<String>): GameStartDto {
-        val result = gameService.initializeGame(playerNames)
+    fun initialize(@RequestBody request: InitializeRequestDto): GameStartDto {
+        val result = gameService.initializeGame(request.playerNames)
         return GameMapper.toGameStartDto(result)
     }
 
