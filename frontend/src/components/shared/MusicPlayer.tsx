@@ -7,14 +7,22 @@ interface MusicPlayerProps {
 }
 
 function titleFromSrc(src: string): string {
-    const filename = src.split("/").pop() ?? ""
+    const filename = decodeURIComponent(src.split("/").pop() ?? "")
     const withoutExtension = filename.replace(/\.[^/.]+$/, "")
 
-    return withoutExtension
-        .split(/[-_]+/)
-        .filter(Boolean)
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")
+    const spaced = withoutExtension
+        // only treat a hyphen/underscore as a word separator when it isn't
+        // already spaced out (so "Artist - Title" is left untouched)
+        .replace(/_+/g, " ")
+        .replace(/(\S)-(\S)/g, "$1 $2")
+        .replace(/\s+/g, " ")
+        .trim()
+
+    const isAllLowercase = spaced === spaced.toLowerCase()
+
+    return isAllLowercase
+        ? spaced.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
+        : spaced
 }
 
 export default function MusicPlayer({ active, src }: MusicPlayerProps) {

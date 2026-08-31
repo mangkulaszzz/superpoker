@@ -26,7 +26,7 @@ export default function MetaPhase({
 
             {metaCards.length === 1 && (
                 <div className="bet-display">
-                    Bet Value: {betValue}
+                    Bet Value: ₱{betValue}
                 </div>
             )}
 
@@ -38,8 +38,13 @@ export default function MetaPhase({
 
             {metaCards.length === 3 && targetScore !== null && (
                 <div className="meta-summary">
-                    <div className="bet-display">Bet: {betValue}</div>
+                    <div className="bet-display">Bet: ₱{betValue}</div>
                     <div className="multiplier-display">Multiplier: {multiplier}</div>
+                    {betValue !== null && multiplier !== null && (
+                        <div className="total-bet-display">
+                            Total Bet: ₱{betValue * multiplier}
+                        </div>
+                    )}
                     <div className="target-display">Target Score: {targetScore}</div>
                 </div>
             )}

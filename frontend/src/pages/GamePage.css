@@ -120,7 +120,12 @@
 
 .multiplier-display {
   color: white;
-  font-size: 30px; 
+  font-size: 30px;
+}
+
+.total-bet-display {
+  color: gold;
+  font-size: 30px;
 }
 
 .target-display {

@@ -51,7 +51,7 @@ export default function GamePage() {
 
             <MusicPlayer
                 active={game.isGamePhase}
-                src="/audio/background.mp3"
+                src={encodeURI(import.meta.env.VITE_MUSIC_TRACK_SRC)}
             />
 
             <div className="top-left-panel">
