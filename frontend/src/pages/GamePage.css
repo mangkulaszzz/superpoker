@@ -1,13 +1,28 @@
 .table-background {
+  position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   background: radial-gradient(circle at center, #1f6f1f 0%, #0b3d0b 70%);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
   overflow: hidden;
+}
+
+.stage {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center center;
+}
+
+.top-left-panel {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 5;
+  text-align: left;
 }
 
 .poker-table {
@@ -21,14 +36,14 @@
 }
 
 .title {
-  margin-bottom: 30px;
-  font-size: 40px;
+  margin: 0 0 16px;
+  font-size: 28px;
   letter-spacing: 2px;
   color: burlywood;
 }
 
 .controls {
-  margin-bottom: 40px;
+  text-align: left;
 }
 
 .controls input {
@@ -36,6 +51,40 @@
   border-radius: 6px;
   border: none;
   margin-right: 10px;
+}
+
+.player-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.player-inputs input {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  width: 180px;
+  text-align: center;
+}
+
+.add-player-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: burlywood;
+  color: #0b3d0b;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.add-player-btn:hover {
+  background: #e0c088;
 }
 
 .controls button {
@@ -51,6 +100,17 @@
   gap: 1rem;
   margin-left: 900px;
   color: white
+}
+
+.meta-area h2 {
+  color: #f5f0e6;
+}
+
+.meta-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .bet-display {

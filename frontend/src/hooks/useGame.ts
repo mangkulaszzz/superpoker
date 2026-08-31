@@ -2,8 +2,13 @@ import { useState } from "react"
 import { type GameSpeed, type CardDto, type RoundResultDto } from "../types/game"
 import { initializeGame, playRound, reset } from "../api/gameApi"
 
+const DEFAULT_PLAYER_FIELDS = 4
+const MAX_PLAYER_FIELDS = 8
+
 export function useGame() {
-    const [playerNames, setPlayerNames] = useState("")
+    const [playerNames, setPlayerNames] = useState<string[]>(
+        Array(DEFAULT_PLAYER_FIELDS).fill("")
+    )
     const [roundResult, setRoundResult] = useState<RoundResultDto | null>(null)
     const [error, setError] = useState("")
     const [dealtCards, setDealtCards] = useState<Record<string, number>>({})
@@ -39,9 +44,19 @@ export function useGame() {
         },
     }
 
+    const setPlayerNameAt = (index: number, value: string) => {
+        setPlayerNames((prev) => prev.map((name, i) => (i === index ? value : name)))
+    }
+
+    const addPlayerField = () => {
+        setPlayerNames((prev) =>
+            prev.length >= MAX_PLAYER_FIELDS ? prev : [...prev, ""]
+        )
+    }
+
     const handleInitialize = async () => {
         try {
-            const names = playerNames.split(",").map((n) => n.trim())
+            const names = playerNames.map((n) => n.trim()).filter((n) => n.length > 0)
             const result = await initializeGame(names)
             setError("")
 
@@ -182,6 +197,8 @@ export function useGame() {
             setIsGamePhase(false)
             setIsMetaPhase(true)
 
+            setPlayerNames(Array(DEFAULT_PLAYER_FIELDS).fill(""))
+
             setBetValue(0)
             setMultiplier(0)
             setTargetScore(0)
@@ -197,6 +214,9 @@ export function useGame() {
     return {
         playerNames,
         setPlayerNames,
+        setPlayerNameAt,
+        addPlayerField,
+        maxPlayerFields: MAX_PLAYER_FIELDS,
         roundResult,
         error,
         dealtCards,

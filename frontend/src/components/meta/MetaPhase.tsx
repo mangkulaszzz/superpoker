@@ -16,7 +16,7 @@ export default function MetaPhase({
 }: Props) {
     return (
         <div className="meta-area">
-            <h2>Game Setup</h2>
+            <h2>Setting up the game</h2>
 
             <div className="meta-cards">
                 {metaCards.map((card, index) => (
@@ -36,9 +36,11 @@ export default function MetaPhase({
                 </div>
             )}
 
-            {targetScore && metaCards.length === 3 && (
-                <div className="target-display">
-                    Target Score: {targetScore}
+            {metaCards.length === 3 && targetScore !== null && (
+                <div className="meta-summary">
+                    <div className="bet-display">Bet: {betValue}</div>
+                    <div className="multiplier-display">Multiplier: {multiplier}</div>
+                    <div className="target-display">Target Score: {targetScore}</div>
                 </div>
             )}
         </div>

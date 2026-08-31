@@ -1,4 +1,5 @@
 import "./GamePage.css"
+import { useEffect, useRef, useState } from "react";
 import MetaPhase from "../components/meta/MetaPhase";
 import PokerTable from "../components/table/PokerTable";
 import MusicPlayer from "../components/shared/MusicPlayer";
@@ -9,56 +10,110 @@ export default function GamePage() {
 
     const game = useGame()
 
+    const stageRef = useRef<HTMLDivElement>(null)
+    const [scale, setScale] = useState(1)
+
+    useEffect(() => {
+        const stage = stageRef.current
+        if (!stage) return
+
+        const recomputeScale = () => {
+            const { offsetWidth, offsetHeight } = stage
+            if (!offsetWidth || !offsetHeight) return
+
+            const fitScale = Math.min(
+                window.innerWidth / offsetWidth,
+                window.innerHeight / offsetHeight
+            )
+
+            // Before the poker table is showing, content is small; only
+            // shrink to fit, never enlarge it. The poker table itself is
+            // allowed to scale up to fill the screen.
+            setScale(!game.isGamePhase ? Math.min(fitScale, 1) : fitScale)
+        }
+
+        recomputeScale()
+
+        const resizeObserver = new ResizeObserver(recomputeScale)
+        resizeObserver.observe(stage)
+        window.addEventListener("resize", recomputeScale)
+
+        return () => {
+            resizeObserver.disconnect()
+            window.removeEventListener("resize", recomputeScale)
+        }
+    }, [game.isGamePhase])
+
     return (
         <div className="table-background">
-
-            {game.gameOver && (
-                <div className="game-over" >
-                    <h1>Game Over!</h1>
-                </div>
-            )}
 
             {game.showSuspense && <div className="suspense-overlay" />}
 
             <MusicPlayer
                 active={game.isGamePhase}
-                trackTitle="SUPER POKER - NOW PLAYING: Background Theme"
                 src="/audio/background.mp3"
             />
 
-            <h1 className="title">Super Poker</h1>
+            <div className="top-left-panel">
+                {game.gameOver && (
+                    <div className="game-over" >
+                        <h1>Game Over!</h1>
+                    </div>
+                )}
 
-            <div className="controls">
-                <input
-                    placeholder="Alice, Bob, Charlie"
-                    value={game.playerNames}
-                    onChange={(e) => game.setPlayerNames(e.target.value)}
-                    hidden={!game.isMetaPhase}
-                />
+                <h1 className="title">Super Poker</h1>
 
-                <button
-                    onClick={game.handleInitialize}
-                    hidden={!game.isMetaPhase}
-                    disabled={game.isMetaAnimating}
-                >
-                    Initialize
-                </button>
+                <div className="controls">
+                    {game.isMetaPhase && (
+                        <div className="player-inputs">
+                            {game.playerNames.map((name, index) => (
+                                <input
+                                    key={index}
+                                    placeholder={`Player ${index + 1}`}
+                                    value={name}
+                                    onChange={(e) => game.setPlayerNameAt(index, e.target.value)}
+                                />
+                            ))}
 
-                <button 
-                    onClick={game.handlePlay}
-                    hidden={game.isMetaPhase}
-                    disabled={game.isRoundOngoing}
-                >
-                    Play Round
-                </button>
+                            <button
+                                type="button"
+                                className="add-player-btn"
+                                onClick={game.addPlayerField}
+                                disabled={game.playerNames.length >= game.maxPlayerFields}
+                                hidden={game.playerNames.length >= game.maxPlayerFields}
+                                aria-label="Add player"
+                            >
+                                +
+                            </button>
+                        </div>
+                    )}
 
-                <button
-                    onClick={game.resetGame}
-                    hidden={!game.gameOver}
-                >
-                    Reset Game
-                </button>
+                    <button
+                        onClick={game.handleInitialize}
+                        hidden={!game.isMetaPhase}
+                        disabled={game.isMetaAnimating}
+                    >
+                        Initialize
+                    </button>
+
+                    <button
+                        onClick={game.handlePlay}
+                        hidden={game.isMetaPhase}
+                        disabled={game.isRoundOngoing}
+                    >
+                        Play Round
+                    </button>
+
+                    <button
+                        onClick={game.resetGame}
+                        hidden={!game.gameOver}
+                    >
+                        Reset Game
+                    </button>
+                </div>
             </div>
+
+            <div className="stage" ref={stageRef} style={{ transform: `scale(${scale})` }}>
 
             {!game.isMetaPhase && game.isGamePhase && (
                 <div className="game-speed">
@@ -109,6 +164,8 @@ export default function GamePage() {
                     displayRiver={game.displayRiver}
                 />
             )}
+
+            </div>
         </div>
     )
 }

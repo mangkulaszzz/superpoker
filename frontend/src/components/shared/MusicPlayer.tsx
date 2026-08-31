@@ -3,13 +3,24 @@ import "./MusicPlayer.css"
 
 interface MusicPlayerProps {
     active: boolean
-    trackTitle: string
     src: string
 }
 
-export default function MusicPlayer({ active, trackTitle, src }: MusicPlayerProps) {
+function titleFromSrc(src: string): string {
+    const filename = src.split("/").pop() ?? ""
+    const withoutExtension = filename.replace(/\.[^/.]+$/, "")
+
+    return withoutExtension
+        .split(/[-_]+/)
+        .filter(Boolean)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+}
+
+export default function MusicPlayer({ active, src }: MusicPlayerProps) {
     const audioRef = useRef<HTMLAudioElement>(null)
     const [paused, setPaused] = useState(false)
+    const trackTitle = titleFromSrc(src)
 
     useEffect(() => {
         const audio = audioRef.current
