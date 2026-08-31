@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@CrossOrigin(origins = ["http://localhost:5173"])
+@CrossOrigin(originPatterns = ["http://localhost:5173", "http://192.168.*.*:5173", "http://10.*.*.*:5173"])
 @RestController
 @RequestMapping("/api/game")
 class GameController(

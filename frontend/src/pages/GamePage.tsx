@@ -1,6 +1,7 @@
 import "./GamePage.css"
 import MetaPhase from "../components/meta/MetaPhase";
 import PokerTable from "../components/table/PokerTable";
+import MusicPlayer from "../components/shared/MusicPlayer";
 import { useGame } from "../hooks/useGame";
 import { type GameSpeed } from "../types/game";
 
@@ -18,6 +19,12 @@ export default function GamePage() {
             )}
 
             {game.showSuspense && <div className="suspense-overlay" />}
+
+            <MusicPlayer
+                active={game.isGamePhase}
+                trackTitle="SUPER POKER - NOW PLAYING: Background Theme"
+                src="/audio/background.mp3"
+            />
 
             <h1 className="title">Super Poker</h1>
 

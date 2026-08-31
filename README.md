@@ -13,3 +13,7 @@ docker compose up --build
 
 then open:
 http://localhost:5173
+
+## Terminate with Docker
+
+docker compose down

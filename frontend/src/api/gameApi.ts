@@ -1,6 +1,6 @@
 import type { GameStartDto, PlayerDto, RoundResultDto } from "../types/game"
 
-const BASE_URL = "http://localhost:8080/api/game"
+const BASE_URL = `http://${window.location.hostname}:8080/api/game`
 
 export async function initializeGame(players: string[]): Promise<GameStartDto> {
     const response = await fetch(`${BASE_URL}/initialize`, {
