@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import MetaPhase from "../components/meta/MetaPhase";
 import PokerTable from "../components/table/PokerTable";
 import MusicPlayer from "../components/shared/MusicPlayer";
+import Scoreboard from "../components/shared/Scoreboard";
 import { useGame } from "../hooks/useGame";
 import { type GameSpeed } from "../types/game";
 
@@ -53,6 +54,8 @@ export default function GamePage() {
                 active={game.isGamePhase}
                 src={encodeURI(import.meta.env.VITE_MUSIC_TRACK_SRC)}
             />
+
+            <Scoreboard players={game.players} />
 
             <div className="top-left-panel">
                 {game.gameOver && (

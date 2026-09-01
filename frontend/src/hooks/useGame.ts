@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { type GameSpeed, type CardDto, type RoundResultDto } from "../types/game"
+import { type GameSpeed, type CardDto, type PlayerDto, type RoundResultDto } from "../types/game"
 import { initializeGame, playRound, reset } from "../api/gameApi"
 
 const DEFAULT_PLAYER_FIELDS = 4
@@ -25,6 +25,7 @@ export function useGame() {
     const [isGamePhase, setIsGamePhase] = useState(false)
     const [isRoundOngoing, setIsRoundOngoing] = useState(false)
 
+    const [players, setPlayers] = useState<PlayerDto[]>([])
     const [currentScore, setCurrentScore] = useState<number[]>([])
     const [animateScore, setAnimateScore] = useState(false)
     const [gameOver, setGameOver] = useState(false)
@@ -60,6 +61,7 @@ export function useGame() {
             const result = await initializeGame(names)
             setError("")
 
+            setPlayers(result.players)
             setBetValue(result.initialBet)
             setMultiplier(result.multiplier)
             setTargetScore(result.targetScore)
@@ -164,6 +166,7 @@ export function useGame() {
                 setShowSuspense(false)
 
                 setCurrentScore(result.players.map(p => p.score))
+                setPlayers(result.players)
                 setAnimateScore(true)
 
                 setTimeout(() => {
@@ -193,6 +196,7 @@ export function useGame() {
             setDealtCommunity(0)
             setShowWinner(false)
             setCurrentScore([])
+            setPlayers([])
 
             setIsGamePhase(false)
             setIsMetaPhase(true)
@@ -218,6 +222,7 @@ export function useGame() {
         addPlayerField,
         maxPlayerFields: MAX_PLAYER_FIELDS,
         roundResult,
+        players,
         error,
         dealtCards,
         dealtCommunity,
